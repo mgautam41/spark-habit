@@ -1,12 +1,48 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { BottomNav } from '@/components/layout/BottomNav';
+import { Header } from '@/components/layout/Header';
+import { Dashboard } from '@/pages/Dashboard';
+import { Habits } from '@/pages/Habits';
+import { Analytics } from '@/pages/Analytics';
+import { CalendarView } from '@/pages/CalendarView';
+import { Settings } from '@/pages/Settings';
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'habits':
+        return <Habits />;
+      case 'analytics':
+        return <Analytics />;
+      case 'calendar':
+        return <CalendarView />;
+      case 'settings':
+        return <Settings />;
+      default:
+        return <Dashboard />;
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background">
+      {/* Desktop Sidebar */}
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      {/* Main Content */}
+      <div className="lg:ml-70">
+        <Header />
+        <main className="min-h-[calc(100vh-72px)]">
+          {renderContent()}
+        </main>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 };
