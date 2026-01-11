@@ -46,7 +46,8 @@ export function IconPicker({ selectedIcon, onSelectIcon, accentColor = '#22c55e'
               style={{ color: isSelected ? accentColor : undefined }}
             />
           </button>
-      ))}
+        );
+      })}
     </div>
   );
 }
