@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { BottomNav } from '@/components/layout/BottomNav';
 import { Header } from '@/components/layout/Header';
@@ -7,9 +7,29 @@ import { Habits } from '@/pages/Habits';
 import { Analytics } from '@/pages/Analytics';
 import { CalendarView } from '@/pages/CalendarView';
 import { Settings } from '@/pages/Settings';
+import { Auth } from '@/pages/Auth';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Check localStorage for existing session
+    return localStorage.getItem('focusflow_authenticated') === 'true';
+  });
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem('focusflow_authenticated', 'true');
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('focusflow_authenticated');
+  };
+
+  // Show Auth page if not authenticated
+  if (!isAuthenticated) {
+    return <Auth onLoginSuccess={handleLoginSuccess} />;
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -22,7 +42,7 @@ const Index = () => {
       case 'calendar':
         return <CalendarView />;
       case 'settings':
-        return <Settings />;
+        return <Settings onLogout={handleLogout} />;
       default:
         return <Dashboard />;
     }

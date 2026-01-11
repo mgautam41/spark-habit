@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { Moon, Palette, Bell, Target, Download, Trash2, HelpCircle, ExternalLink } from 'lucide-react';
+import { Moon, Palette, Bell, Target, Download, Trash2, HelpCircle, ExternalLink, LogOut } from 'lucide-react';
 import { categoryDistribution } from '@/data/mockData';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 
-export function Settings() {
+interface SettingsProps {
+  onLogout?: () => void;
+}
+
+export function Settings({ onLogout }: SettingsProps) {
   const [darkMode, setDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [weeklyGoal, setWeeklyGoal] = useState([80]);
@@ -228,6 +232,21 @@ export function Settings() {
               Contact Support
               <ExternalLink className="w-4 h-4" />
             </a>
+
+            {onLogout && (
+              <button
+                onClick={() => {
+                  onLogout();
+                  toast.success('Logged out successfully');
+                }}
+                className="w-full flex items-center justify-between p-4 mt-4 rounded-lg bg-danger/10 hover:bg-danger/20 transition-colors text-danger"
+              >
+                <div className="flex items-center gap-3">
+                  <LogOut className="w-5 h-5" />
+                  <span className="font-medium">Sign Out</span>
+                </div>
+              </button>
+            )}
           </div>
         </section>
       </div>
