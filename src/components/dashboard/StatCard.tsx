@@ -60,30 +60,30 @@ export function StatCard({
         isVisible && "animate-fade-in-up"
       )}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-3 sm:gap-4">
         <div className={cn(
-          "w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0",
+          "w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0",
           iconBgClass
         )}>
-          <Icon className="w-5 h-5 text-primary" />
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
         </div>
         
         <div className="flex-1 min-w-0">
-          <p className="text-h1 text-foreground font-bold leading-none">
+          <p className="text-xl sm:text-2xl lg:text-h1 text-foreground font-bold leading-none truncate">
             {displayValue}
           </p>
-          <p className="text-tiny text-muted-foreground mt-1 uppercase tracking-wider">
+          <p className="text-[10px] sm:text-tiny text-muted-foreground mt-0.5 sm:mt-1 uppercase tracking-wider truncate">
             {label}
           </p>
           
           {change && (
-            <p className="text-small text-primary mt-2 font-medium">
+            <p className="text-small text-primary mt-1.5 sm:mt-2 font-medium truncate">
               {change}
             </p>
           )}
 
           {typeof progress === 'number' && (
-            <div className="mt-3 progress-bar">
+            <div className="mt-2 sm:mt-3 progress-bar">
               <div 
                 className="progress-bar-fill bg-gradient-to-r from-primary to-primary-hover"
                 style={{ 

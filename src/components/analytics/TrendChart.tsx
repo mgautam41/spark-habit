@@ -4,14 +4,14 @@ import { monthlyTrend } from '@/data/mockData';
 export function TrendChart() {
   return (
     <div className="stat-card">
-      <div className="mb-6">
-        <h3 className="text-h3 text-foreground">Habit Consistency</h3>
+      <div className="mb-4 sm:mb-6">
+        <h3 className="text-lg sm:text-h3 text-foreground">Habit Consistency</h3>
         <p className="text-small text-muted-foreground mt-1">Last 30 days</p>
       </div>
       
-      <div className="h-[240px]">
+      <div className="h-[200px] sm:h-[240px] -mx-2 sm:mx-0">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={monthlyTrend}>
+          <AreaChart data={monthlyTrend} margin={{ left: -10, right: 0 }}>
             <defs>
               <linearGradient id="colorHabits" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
@@ -22,14 +22,15 @@ export function TrendChart() {
               dataKey="date" 
               axisLine={false}
               tickLine={false}
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 9 }}
               interval="preserveStartEnd"
             />
             <YAxis 
               axisLine={false}
               tickLine={false}
-              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
               domain={[0, 12]}
+              width={25}
             />
             <Tooltip
               content={({ active, payload }) => {
@@ -51,7 +52,7 @@ export function TrendChart() {
               type="monotone"
               dataKey="habits"
               stroke="hsl(var(--accent))"
-              strokeWidth={3}
+              strokeWidth={2}
               fill="url(#colorHabits)"
             />
           </AreaChart>

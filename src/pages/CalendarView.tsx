@@ -38,37 +38,37 @@ export function CalendarView() {
   return (
     <div className="p-6 lg:p-8 max-w-[1200px] mx-auto pb-32 lg:pb-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-h1 text-foreground">Calendar</h1>
-          <p className="text-body text-muted-foreground mt-2">
+          <h1 className="text-2xl sm:text-h1 text-foreground">Calendar</h1>
+          <p className="text-body text-muted-foreground mt-1 sm:mt-2">
             View your habit history
           </p>
         </div>
 
         {/* Month Navigation */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            className="p-2 rounded-lg hover:bg-background-tertiary transition-colors"
+            className="p-2 rounded-lg hover:bg-background-tertiary transition-colors touch-manipulation"
           >
             <ChevronLeft className="w-5 h-5 text-muted-foreground" />
           </button>
           
-          <span className="text-h3 text-foreground min-w-[180px] text-center">
-            {format(currentMonth, 'MMMM yyyy')}
+          <span className="text-body sm:text-h3 text-foreground min-w-[120px] sm:min-w-[180px] text-center font-semibold">
+            {format(currentMonth, 'MMM yyyy')}
           </span>
           
           <button
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            className="p-2 rounded-lg hover:bg-background-tertiary transition-colors"
+            className="p-2 rounded-lg hover:bg-background-tertiary transition-colors touch-manipulation"
           >
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
 
           <button
             onClick={() => setCurrentMonth(new Date())}
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-body font-medium hover:bg-primary-hover transition-colors"
+            className="px-3 sm:px-4 py-2 rounded-lg bg-primary text-primary-foreground text-small sm:text-body font-medium hover:bg-primary-hover transition-colors touch-manipulation"
           >
             Today
           </button>
@@ -76,18 +76,22 @@ export function CalendarView() {
       </div>
 
       {/* Calendar Grid */}
-      <div className="stat-card p-6">
+      <div className="stat-card p-3 sm:p-6 overflow-hidden">
         {/* Day Headers */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
-          {dayNames.map(day => (
-            <div key={day} className="text-center py-2">
-              <span className="text-tiny text-muted-foreground uppercase">{day}</span>
+        <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-1 sm:mb-2">
+          {dayNames.map((day, i) => (
+            <div key={day} className="text-center py-1 sm:py-2">
+              <span className="text-[10px] sm:text-tiny text-muted-foreground uppercase">
+                {/* Show first letter on mobile */}
+                <span className="sm:hidden">{day[0]}</span>
+                <span className="hidden sm:inline">{day}</span>
+              </span>
             </div>
           ))}
         </div>
 
         {/* Calendar Days */}
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
           {/* Padding for start of month */}
           {Array.from({ length: paddingDays }).map((_, i) => (
             <div key={`pad-${i}`} className="aspect-square" />
@@ -106,24 +110,24 @@ export function CalendarView() {
                 onClick={() => !isFuture && setSelectedDate(day)}
                 disabled={isFuture}
                 className={cn(
-                  "aspect-square rounded-lg p-1 transition-all duration-200 flex flex-col items-center justify-center gap-0.5 relative",
+                  "aspect-square rounded sm:rounded-lg p-0.5 sm:p-1 transition-all duration-200 flex flex-col items-center justify-center gap-0 sm:gap-0.5 relative touch-manipulation",
                   isFuture 
                     ? "bg-background-tertiary/50 cursor-not-allowed" 
                     : getCompletionColor(rate),
-                  isCurrentDay && "ring-2 ring-primary animate-pulse-glow",
-                  isSelected && "ring-2 ring-accent",
-                  !isFuture && "hover:scale-105 cursor-pointer"
+                  isCurrentDay && "ring-1 sm:ring-2 ring-primary animate-pulse-glow",
+                  isSelected && "ring-1 sm:ring-2 ring-accent",
+                  !isFuture && "hover:scale-105 active:scale-95 cursor-pointer"
                 )}
                 style={{ animationDelay: `${index * 20}ms` }}
               >
                 <span className={cn(
-                  "text-body font-medium",
+                  "text-[11px] sm:text-body font-medium",
                   isFuture ? "text-muted-foreground/50" : "text-foreground"
                 )}>
                   {format(day, 'd')}
                 </span>
                 {!isFuture && rate > 0 && (
-                  <span className="text-tiny text-foreground/80">
+                  <span className="hidden sm:block text-tiny text-foreground/80">
                     {rate}%
                   </span>
                 )}
@@ -133,15 +137,15 @@ export function CalendarView() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 mt-6 pt-6 border-t border-card-border">
-          <span className="text-tiny text-muted-foreground">Less</span>
-          <div className="flex gap-1">
-            <div className="w-4 h-4 rounded bg-[#7f1d1d]" />
-            <div className="w-4 h-4 rounded bg-[#92400e]" />
-            <div className="w-4 h-4 rounded bg-[#a16207]" />
-            <div className="w-4 h-4 rounded bg-[#14532d]" />
+        <div className="flex items-center justify-center gap-2 sm:gap-4 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-card-border">
+          <span className="text-[10px] sm:text-tiny text-muted-foreground">Less</span>
+          <div className="flex gap-0.5 sm:gap-1">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-[#7f1d1d]" />
+            <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-[#92400e]" />
+            <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-[#a16207]" />
+            <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-[#14532d]" />
           </div>
-          <span className="text-tiny text-muted-foreground">More</span>
+          <span className="text-[10px] sm:text-tiny text-muted-foreground">More</span>
         </div>
       </div>
 

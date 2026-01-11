@@ -34,7 +34,7 @@ const Index = () => {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       {/* Main Content */}
-      <div className="lg:ml-70">
+      <div className="lg:pl-70">
         <Header />
         <main className="min-h-[calc(100vh-72px)]">
           {renderContent()}
