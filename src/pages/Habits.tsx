@@ -59,22 +59,22 @@ export function Habits() {
   ] as const;
 
   return (
-    <div className="p-6 lg:p-8 max-w-[1200px] mx-auto pb-40 lg:pb-24">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1200px] mx-auto pb-36 lg:pb-24">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-h1 text-foreground">Today's Habits</h1>
-        <p className="text-body text-muted-foreground mt-2">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-h1 text-foreground">Today's Habits</h1>
+        <p className="text-body text-muted-foreground mt-1 sm:mt-2">
           {format(new Date(), 'EEEE, MMMM d')}
         </p>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
         {filterOptions.map(option => (
           <button
             key={option.value}
             onClick={() => setFilter(option.value)}
-            className={`px-4 py-2 rounded-lg text-body font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-small sm:text-body font-medium transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
               filter === option.value
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-background-tertiary text-muted-foreground hover:text-foreground'
@@ -86,7 +86,7 @@ export function Habits() {
       </div>
 
       {/* Habits List */}
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {filteredHabits.map((habit, index) => (
           <HabitCard
             key={habit.id}
@@ -98,8 +98,8 @@ export function Habits() {
       </div>
 
       {filteredHabits.length === 0 && (
-        <div className="text-center py-16">
-          <p className="text-h3 text-muted-foreground">
+        <div className="text-center py-12 sm:py-16">
+          <p className="text-lg sm:text-h3 text-muted-foreground">
             {filter === 'pending' ? 'All habits completed! 🎉' : 'No habits found'}
           </p>
         </div>

@@ -113,17 +113,18 @@ export function Settings() {
 
             <div>
               <p className="text-body font-medium text-foreground mb-3">Reminder Days</p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
                   <button
                     key={day}
-                    className={`px-3 py-2 rounded-lg text-small font-medium transition-colors ${
+                    className={`px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-small font-medium transition-colors touch-manipulation ${
                       index < 5
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-background-tertiary text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    {day}
+                    <span className="sm:hidden">{day.slice(0, 1)}</span>
+                    <span className="hidden sm:inline">{day}</span>
                   </button>
                 ))}
               </div>

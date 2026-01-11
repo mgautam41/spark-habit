@@ -43,8 +43,8 @@ const aiInsights = [
 
 export function InsightCards() {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {insights.map((insight, index) => {
           const Icon = insight.icon;
           return (
@@ -53,12 +53,12 @@ export function InsightCards() {
               className="stat-card animate-fade-in-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className={`w-10 h-10 rounded-xl ${insight.bgColor} flex items-center justify-center mb-3`}>
-                <Icon className={`w-5 h-5 ${insight.color}`} />
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${insight.bgColor} flex items-center justify-center mb-2 sm:mb-3`}>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${insight.color}`} />
               </div>
-              <p className="text-tiny text-muted-foreground uppercase">{insight.title}</p>
-              <p className="text-body font-semibold text-foreground mt-1">{insight.value}</p>
-              <p className="text-small text-muted-foreground">{insight.detail}</p>
+              <p className="text-[10px] sm:text-tiny text-muted-foreground uppercase truncate">{insight.title}</p>
+              <p className="text-small sm:text-body font-semibold text-foreground mt-0.5 sm:mt-1 truncate">{insight.value}</p>
+              <p className="text-small text-muted-foreground truncate">{insight.detail}</p>
             </div>
           );
         })}
@@ -66,21 +66,21 @@ export function InsightCards() {
 
       {/* AI Insights */}
       <div className="stat-card bg-gradient-to-br from-card to-background-tertiary">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
-            <Lightbulb className="w-5 h-5 text-accent" />
+        <div className="flex items-center gap-3 mb-3 sm:mb-4">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
+            <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
           </div>
-          <h3 className="text-h3 text-foreground">Insights</h3>
+          <h3 className="text-lg sm:text-h3 text-foreground">Insights</h3>
         </div>
-        <ul className="space-y-3">
+        <ul className="space-y-2 sm:space-y-3">
           {aiInsights.map((insight, index) => (
             <li 
               key={index}
-              className="flex items-center gap-3 text-body text-muted-foreground animate-fade-in-up"
+              className="flex items-start sm:items-center gap-2 sm:gap-3 text-small sm:text-body text-muted-foreground animate-fade-in-up"
               style={{ animationDelay: `${(index + 4) * 100}ms` }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-              {insight}
+              <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0 mt-1.5 sm:mt-0" />
+              <span>{insight}</span>
             </li>
           ))}
         </ul>

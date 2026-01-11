@@ -20,10 +20,10 @@ export function CompletionSummary({ completed, total }: CompletionSummaryProps) 
   const message = getMessage();
 
   return (
-    <div className="fixed bottom-20 lg:bottom-6 left-4 right-4 lg:left-auto lg:right-6 lg:w-[360px] z-40">
-      <div className="glass-card p-4 flex items-center gap-4 shadow-modal">
+    <div className="fixed bottom-20 lg:bottom-6 left-3 right-3 sm:left-4 sm:right-4 lg:left-auto lg:right-6 lg:w-[360px] z-40">
+      <div className="glass-card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 shadow-modal">
         {/* Circular Progress */}
-        <div className="relative w-14 h-14 flex-shrink-0">
+        <div className="relative w-11 h-11 sm:w-14 sm:h-14 flex-shrink-0">
           <svg className="w-full h-full -rotate-90" viewBox="0 0 56 56">
             <circle
               cx="28"
@@ -47,16 +47,16 @@ export function CompletionSummary({ completed, total }: CompletionSummaryProps) 
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <CheckCircle2 className="w-5 h-5 text-primary" />
+            <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
           </div>
         </div>
 
         {/* Text */}
-        <div className="flex-1">
-          <p className="text-body font-semibold text-foreground">
+        <div className="flex-1 min-w-0">
+          <p className="text-small sm:text-body font-semibold text-foreground truncate">
             {completed} of {total} completed ({percentage}%)
           </p>
-          <p className="text-small text-muted-foreground">
+          <p className="text-small text-muted-foreground truncate">
             {message.text} {message.emoji}
           </p>
         </div>

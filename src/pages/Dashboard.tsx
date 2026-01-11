@@ -36,16 +36,16 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="p-6 lg:p-8 max-w-[1200px] mx-auto pb-32 lg:pb-8">
-      <div className="mb-8">
-        <h1 className="text-h1 text-foreground">Dashboard</h1>
-        <p className="text-body text-muted-foreground mt-2">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1200px] mx-auto pb-28 lg:pb-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-h1 text-foreground">Dashboard</h1>
+        <p className="text-body text-muted-foreground mt-1 sm:mt-2">
           Track your progress and stay consistent
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 stagger-children">
         {stats.map((stat, index) => (
           <StatCard
             key={stat.label}

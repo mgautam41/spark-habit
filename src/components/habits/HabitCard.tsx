@@ -49,12 +49,12 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
         animationDelay: `${delay}ms`
       }}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
         {/* Checkbox */}
         <button
           onClick={handleToggle}
           className={cn(
-            "habit-checkbox",
+            "habit-checkbox flex-shrink-0 mt-0.5 sm:mt-0",
             habit.completed && "checked",
             isAnimating && "animate-number-pop"
           )}
@@ -70,17 +70,17 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <h3 
               className={cn(
-                "text-body-lg font-semibold text-foreground transition-all duration-300",
+                "text-body sm:text-body-lg font-semibold text-foreground transition-all duration-300 break-words",
                 habit.completed && "line-through text-muted-foreground"
               )}
             >
               {habit.name}
             </h3>
             <span 
-              className="category-badge"
+              className="category-badge text-[10px] sm:text-xs flex-shrink-0"
               style={{ 
                 backgroundColor: `${categoryColor}20`,
                 color: categoryColor
@@ -90,13 +90,13 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
             </span>
           </div>
           
-          <p className="text-small text-muted-foreground mt-1 flex items-center gap-2">
-            <IconComponent className="w-3.5 h-3.5" />
-            {habit.goal}
+          <p className="text-small text-muted-foreground mt-1 flex items-center gap-2 truncate">
+            <IconComponent className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="truncate">{habit.goal}</span>
           </p>
 
           {/* Progress Bar */}
-          <div className="mt-3 progress-bar max-w-[200px]">
+          <div className="mt-2 sm:mt-3 progress-bar w-full max-w-[200px]">
             <div 
               className="progress-bar-fill"
               style={{ 
@@ -108,8 +108,8 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="flex flex-col items-end gap-2">
+        {/* Stats - Hidden on very small screens, shown as inline on mobile */}
+        <div className="hidden xs:flex flex-col items-end gap-2 flex-shrink-0">
           {habit.streak >= 7 && (
             <div className="streak-badge">
               <Flame className="w-3 h-3" />
@@ -117,9 +117,9 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
             </div>
           )}
           {habit.streak < 7 && habit.streak > 0 && (
-            <div className="flex items-center gap-1 text-small text-muted-foreground">
+            <div className="flex items-center gap-1 text-small text-muted-foreground whitespace-nowrap">
               <Flame className="w-3 h-3 text-warning" />
-              <span>{habit.streak} days</span>
+              <span>{habit.streak}d</span>
             </div>
           )}
         </div>
