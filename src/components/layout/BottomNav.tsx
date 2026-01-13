@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 interface BottomNavProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  isVisible?: boolean;
 }
 
 const navItems = [
@@ -20,9 +21,15 @@ const navItems = [
   { id: 'profile', label: 'Profile', icon: User },
 ];
 
-export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+export function BottomNav({ activeTab, onTabChange, isVisible = true }: BottomNavProps) {
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background-secondary/95 backdrop-blur-xl border-t border-card-border z-50 pb-safe">
+    <nav 
+      className={cn(
+        "lg:hidden fixed bottom-0 left-0 right-0 bg-background-secondary/95 backdrop-blur-xl border-t border-card-border z-50 pb-safe",
+        "transition-transform duration-300 ease-out will-change-transform",
+        !isVisible && "translate-y-full"
+      )}
+    >
       <div className="flex items-center justify-around px-1 py-1.5 sm:py-2">
         {navItems.map((item) => {
           const Icon = item.icon;

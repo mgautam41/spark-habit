@@ -14,6 +14,7 @@ import { ArchivedHabits } from '@/pages/ArchivedHabits';
 import { Profile } from '@/pages/Profile';
 import { HabitProvider } from '@/contexts/HabitContext';
 import { ActivityProvider } from '@/contexts/ActivityContext';
+import { useScrollHide } from '@/hooks/use-scroll-hide';
 
 type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit' | 'archived-habits' | 'profile';
 
@@ -23,6 +24,8 @@ const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('focusflow_authenticated') === 'true';
   });
+  
+  const { isVisible } = useScrollHide({ threshold: 10 });
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
@@ -94,39 +97,37 @@ const Index = () => {
     }
   };
 
-  // Full-screen pages without layout
-  if (activeTab === 'create-habit' || activeTab === 'edit-habit' || activeTab === 'archived-habits' || activeTab === 'profile') {
-    return (
-      <ActivityProvider>
-        <HabitProvider>
-          <div className="min-h-screen bg-background">
-            {renderContent()}
-          </div>
-        </HabitProvider>
-      </ActivityProvider>
-    );
-  }
+  // Determine if we should show header (not on full-screen pages)
+  const showHeader = !['create-habit', 'edit-habit', 'archived-habits', 'profile'].includes(activeTab);
+  const showSidebar = !['create-habit', 'edit-habit', 'archived-habits', 'profile'].includes(activeTab);
 
   return (
     <ActivityProvider>
       <HabitProvider>
         <div className="min-h-screen bg-background">
-          <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
+          {showSidebar && (
+            <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
+          )}
           
-          <div className="lg:pl-70">
-            <Header 
-              onOpenSettings={() => navigateTo('settings')} 
-              onOpenArchivedHabits={() => navigateTo('archived-habits')}
-              onLogout={handleLogout}
-            />
-            <main className="min-h-[calc(100vh-72px)]">
+          <div className={showSidebar ? "lg:pl-70" : ""}>
+            {showHeader && (
+              <Header 
+                onOpenSettings={() => navigateTo('settings')} 
+                onOpenArchivedHabits={() => navigateTo('archived-habits')}
+                onLogout={handleLogout}
+                isVisible={isVisible}
+              />
+            )}
+            <main className={showHeader ? "min-h-[calc(100vh-72px)]" : "min-h-screen"}>
               {renderContent()}
             </main>
           </div>
 
+          {/* Bottom nav visible on all pages for mobile */}
           <BottomNav 
             activeTab={activeTab} 
             onTabChange={(tab) => navigateTo(tab as ViewType)}
+            isVisible={isVisible}
           />
         </div>
       </HabitProvider>

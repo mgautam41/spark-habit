@@ -3,19 +3,27 @@ import { getRandomQuote } from '@/data/mockData';
 import { format } from 'date-fns';
 import { NotificationDropdown } from './NotificationDropdown';
 import { ProfileDropdown } from './ProfileDropdown';
+import { cn } from '@/lib/utils';
 
 interface HeaderProps {
   onOpenSettings?: () => void;
   onOpenArchivedHabits?: () => void;
   onLogout?: () => void;
+  isVisible?: boolean;
 }
 
-export function Header({ onOpenSettings, onOpenArchivedHabits, onLogout }: HeaderProps) {
+export function Header({ onOpenSettings, onOpenArchivedHabits, onLogout, isVisible = true }: HeaderProps) {
   const today = new Date();
   const quote = getRandomQuote();
 
   return (
-    <header className="h-14 sm:h-16 lg:h-18 bg-background-secondary/80 backdrop-blur-xl border-b border-card-border sticky top-0 z-40">
+    <header 
+      className={cn(
+        "h-14 sm:h-16 lg:h-18 bg-background-secondary/80 backdrop-blur-xl border-b border-card-border sticky top-0 z-40",
+        "transition-transform duration-300 ease-out will-change-transform",
+        !isVisible && "lg:translate-y-0 -translate-y-full"
+      )}
+    >
       <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between max-w-[1200px] mx-auto gap-4">
         {/* Mobile Logo */}
         <div className="lg:hidden flex items-center gap-2 flex-shrink-0">
