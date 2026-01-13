@@ -2,14 +2,17 @@ import {
   LayoutDashboard, 
   CheckSquare, 
   BarChart3, 
-  Calendar, 
-  Settings 
+  Calendar
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ProfileDropdown } from './ProfileDropdown';
 
 interface BottomNavProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  onOpenSettings: () => void;
+  onOpenArchivedHabits: () => void;
+  onLogout: () => void;
 }
 
 const navItems = [
@@ -17,10 +20,9 @@ const navItems = [
   { id: 'habits', label: 'Habits', icon: CheckSquare },
   { id: 'analytics', label: 'Stats', icon: BarChart3 },
   { id: 'calendar', label: 'Calendar', icon: Calendar },
-  { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
-export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+export function BottomNav({ activeTab, onTabChange, onOpenSettings, onOpenArchivedHabits, onLogout }: BottomNavProps) {
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-background-secondary/95 backdrop-blur-xl border-t border-card-border z-50 pb-safe">
       <div className="flex items-center justify-around px-1 py-1.5 sm:py-2">
@@ -44,6 +46,16 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             </button>
           );
         })}
+        
+        {/* Profile Dropdown for Mobile */}
+        <div className="flex-1 flex items-center justify-center">
+          <ProfileDropdown 
+            onOpenSettings={onOpenSettings}
+            onOpenArchivedHabits={onOpenArchivedHabits}
+            onLogout={onLogout}
+            isMobile={true}
+          />
+        </div>
       </div>
     </nav>
   );
