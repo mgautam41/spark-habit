@@ -4,6 +4,8 @@ import { categoryDistribution } from '@/data/mockData';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
+import { ArchivedHabitsSection } from '@/components/settings/ArchivedHabitsSection';
+import { ActivityHistory } from '@/components/settings/ActivityHistory';
 
 interface SettingsProps {
   onLogout?: () => void;
@@ -36,6 +38,12 @@ export function Settings({ onLogout }: SettingsProps) {
       </div>
 
       <div className="space-y-6">
+        {/* Activity History */}
+        <ActivityHistory />
+
+        {/* Archived Habits */}
+        <ArchivedHabitsSection />
+
         {/* Appearance */}
         <section className="stat-card">
           <h2 className="text-h3 text-foreground mb-6 flex items-center gap-2">

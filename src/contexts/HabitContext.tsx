@@ -36,6 +36,7 @@ interface HabitContextType {
   restoreHabit: (id: number) => void;
   toggleHabit: (id: number) => void;
   resetStreak: (id: number) => void;
+  reorderHabits: (fromIndex: number, toIndex: number) => void;
   addNote: (habitId: number, content: string, mood?: 'happy' | 'neutral' | 'sad') => void;
   getHabitById: (id: number) => Habit | undefined;
   getNotesByHabitId: (habitId: number) => HabitNote[];
@@ -180,6 +181,15 @@ export function HabitProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const reorderHabits = useCallback((fromIndex: number, toIndex: number) => {
+    setHabits(prev => {
+      const newHabits = [...prev];
+      const [movedHabit] = newHabits.splice(fromIndex, 1);
+      newHabits.splice(toIndex, 0, movedHabit);
+      return newHabits;
+    });
+  }, []);
+
   const addNote = useCallback((habitId: number, content: string, mood?: 'happy' | 'neutral' | 'sad') => {
     const newNote: HabitNote = {
       id: generateUniqueId(),
@@ -215,6 +225,7 @@ export function HabitProvider({ children }: { children: ReactNode }) {
       restoreHabit,
       toggleHabit,
       resetStreak,
+      reorderHabits,
       addNote,
       getHabitById,
       getNotesByHabitId,

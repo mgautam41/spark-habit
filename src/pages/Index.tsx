@@ -11,6 +11,7 @@ import { Auth } from '@/pages/Auth';
 import { CreateHabit } from '@/pages/CreateHabit';
 import { EditHabit } from '@/pages/EditHabit';
 import { HabitProvider } from '@/contexts/HabitContext';
+import { ActivityProvider } from '@/contexts/ActivityContext';
 
 type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit';
 
@@ -78,29 +79,33 @@ const Index = () => {
   // Full-screen pages without layout
   if (activeTab === 'create-habit' || activeTab === 'edit-habit') {
     return (
-      <HabitProvider>
-        <div className="min-h-screen bg-background">
-          {renderContent()}
-        </div>
-      </HabitProvider>
+      <ActivityProvider>
+        <HabitProvider>
+          <div className="min-h-screen bg-background">
+            {renderContent()}
+          </div>
+        </HabitProvider>
+      </ActivityProvider>
     );
   }
 
   return (
-    <HabitProvider>
-      <div className="min-h-screen bg-background">
-        <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
-        
-        <div className="lg:pl-70">
-          <Header />
-          <main className="min-h-[calc(100vh-72px)]">
-            {renderContent()}
-          </main>
-        </div>
+    <ActivityProvider>
+      <HabitProvider>
+        <div className="min-h-screen bg-background">
+          <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
+          
+          <div className="lg:pl-70">
+            <Header />
+            <main className="min-h-[calc(100vh-72px)]">
+              {renderContent()}
+            </main>
+          </div>
 
-        <BottomNav activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
-      </div>
-    </HabitProvider>
+          <BottomNav activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
+        </div>
+      </HabitProvider>
+    </ActivityProvider>
   );
 };
 

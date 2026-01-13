@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { HabitCard } from '@/components/habits/HabitCard';
+import { DraggableHabitCard } from '@/components/habits/DraggableHabitCard';
 import { CompletionSummary } from '@/components/habits/CompletionSummary';
 import { AddHabitButton } from '@/components/habits/AddHabitButton';
 import { useHabits } from '@/contexts/HabitContext';
+import { useActivity } from '@/contexts/ActivityContext';
 
 interface HabitsProps {
   onCreateHabit: () => void;
@@ -11,14 +12,34 @@ interface HabitsProps {
 }
 
 export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
-  const { habits, toggleHabit } = useHabits();
+  const { habits, toggleHabit, reorderHabits } = useHabits();
+  const { addActivity } = useActivity();
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
 
   const completedCount = habits.filter(h => h.completed).length;
   const totalCount = habits.length;
 
   const handleToggle = (id: number) => {
-    toggleHabit(id);
+    const habit = habits.find(h => h.id === id);
+    if (habit) {
+      toggleHabit(id);
+      addActivity(
+        habit.completed ? 'habit_uncompleted' : 'habit_completed',
+        habit.name
+      );
+    }
+  };
+
+  const handleMoveUp = (index: number) => {
+    if (index > 0) {
+      reorderHabits(index, index - 1);
+    }
+  };
+
+  const handleMoveDown = (index: number) => {
+    if (index < filteredHabits.length - 1) {
+      reorderHabits(index, index + 1);
+    }
   };
 
   const filteredHabits = habits.filter(habit => {
@@ -63,11 +84,15 @@ export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
       {/* Habits List */}
       <div className="space-y-2 sm:space-y-3">
         {filteredHabits.map((habit, index) => (
-          <HabitCard
+          <DraggableHabitCard
             key={habit.id}
             habit={habit}
+            index={index}
+            totalCount={filteredHabits.length}
             onToggle={handleToggle}
             onEdit={() => onEditHabit(habit.id)}
+            onMoveUp={handleMoveUp}
+            onMoveDown={handleMoveDown}
             delay={index * 60}
           />
         ))}
