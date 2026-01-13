@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { DraggableHabitCard } from '@/components/habits/DraggableHabitCard';
 import { CompletionSummary } from '@/components/habits/CompletionSummary';
-import { AddHabitButton } from '@/components/habits/AddHabitButton';
 import { useHabits } from '@/contexts/HabitContext';
 import { useActivity } from '@/contexts/ActivityContext';
 import { useScrollHide } from '@/hooks/use-scroll-hide';
@@ -105,11 +104,12 @@ export function Habits() {
         </div>
       )}
 
-      {/* Completion Summary */}
-      <CompletionSummary completed={completedCount} total={totalCount} />
-
-      {/* FAB with scroll behavior */}
-      <AddHabitButton onClick={() => navigate('/habits/create')} isVisible={isVisible} />
+      {/* Completion Summary with integrated Add button */}
+      <CompletionSummary 
+        completed={completedCount} 
+        total={totalCount} 
+        isVisible={isVisible}
+      />
     </div>
   );
 }
