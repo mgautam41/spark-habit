@@ -2,12 +2,15 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { getRandomQuote } from '@/data/mockData';
 import { format } from 'date-fns';
 import { NotificationDropdown } from './NotificationDropdown';
+import { ProfileDropdown } from './ProfileDropdown';
 
 interface HeaderProps {
   onOpenSettings?: () => void;
+  onOpenArchivedHabits?: () => void;
+  onLogout?: () => void;
 }
 
-export function Header({ onOpenSettings }: HeaderProps) {
+export function Header({ onOpenSettings, onOpenArchivedHabits, onLogout }: HeaderProps) {
   const today = new Date();
   const quote = getRandomQuote();
 
@@ -35,9 +38,13 @@ export function Header({ onOpenSettings }: HeaderProps) {
           {/* Notification Bell */}
           <NotificationDropdown onOpenSettings={onOpenSettings} />
 
-          {/* Avatar - Desktop */}
-          <div className="hidden lg:flex w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent items-center justify-center flex-shrink-0">
-            <span className="text-sm font-bold text-foreground">JD</span>
+          {/* Profile Dropdown - Desktop */}
+          <div className="hidden lg:block">
+            <ProfileDropdown 
+              onOpenSettings={onOpenSettings || (() => {})}
+              onOpenArchivedHabits={onOpenArchivedHabits || (() => {})}
+              onLogout={onLogout || (() => {})}
+            />
           </div>
         </div>
       </div>

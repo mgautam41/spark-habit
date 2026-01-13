@@ -104,13 +104,23 @@ const Index = () => {
           <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
           
           <div className="lg:pl-70">
-            <Header onOpenSettings={() => navigateTo('settings')} />
+            <Header 
+              onOpenSettings={() => navigateTo('settings')} 
+              onOpenArchivedHabits={() => navigateTo('archived-habits')}
+              onLogout={handleLogout}
+            />
             <main className="min-h-[calc(100vh-72px)]">
               {renderContent()}
             </main>
           </div>
 
-          <BottomNav activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
+          <BottomNav 
+            activeTab={activeTab} 
+            onTabChange={(tab) => navigateTo(tab as ViewType)}
+            onOpenSettings={() => navigateTo('settings')}
+            onOpenArchivedHabits={() => navigateTo('archived-habits')}
+            onLogout={handleLogout}
+          />
         </div>
       </HabitProvider>
     </ActivityProvider>

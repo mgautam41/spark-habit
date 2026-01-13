@@ -1,6 +1,8 @@
 import { Target, CheckCircle2, Flame, TrendingUp } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { WeeklyOverview } from '@/components/dashboard/WeeklyOverview';
+import { DetailedStats } from '@/components/dashboard/DetailedStats';
+import { PastMonthOverview } from '@/components/dashboard/PastMonthOverview';
 import { habits } from '@/data/mockData';
 
 export function Dashboard() {
@@ -61,6 +63,12 @@ export function Dashboard() {
 
       {/* Weekly Overview */}
       <WeeklyOverview />
+
+      {/* Detailed Stats */}
+      <DetailedStats />
+
+      {/* Past Month Overview */}
+      <PastMonthOverview />
     </div>
   );
 }
