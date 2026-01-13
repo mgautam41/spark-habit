@@ -10,10 +10,11 @@ import { Settings } from '@/pages/Settings';
 import { Auth } from '@/pages/Auth';
 import { CreateHabit } from '@/pages/CreateHabit';
 import { EditHabit } from '@/pages/EditHabit';
+import { ArchivedHabits } from '@/pages/ArchivedHabits';
 import { HabitProvider } from '@/contexts/HabitContext';
 import { ActivityProvider } from '@/contexts/ActivityContext';
 
-type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit';
+type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit' | 'archived-habits';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<ViewType>('dashboard');
@@ -64,20 +65,27 @@ const Index = () => {
       case 'calendar':
         return <CalendarView />;
       case 'settings':
-        return <Settings onLogout={handleLogout} />;
+        return (
+          <Settings 
+            onLogout={handleLogout} 
+            onOpenArchivedHabits={() => navigateTo('archived-habits')}
+          />
+        );
       case 'create-habit':
         return <CreateHabit onBack={() => navigateTo('habits')} />;
       case 'edit-habit':
         return editingHabitId ? (
           <EditHabit habitId={editingHabitId} onBack={() => navigateTo('habits')} />
         ) : null;
+      case 'archived-habits':
+        return <ArchivedHabits onBack={() => navigateTo('settings')} />;
       default:
         return <Dashboard />;
     }
   };
 
   // Full-screen pages without layout
-  if (activeTab === 'create-habit' || activeTab === 'edit-habit') {
+  if (activeTab === 'create-habit' || activeTab === 'edit-habit' || activeTab === 'archived-habits') {
     return (
       <ActivityProvider>
         <HabitProvider>
@@ -96,7 +104,7 @@ const Index = () => {
           <Sidebar activeTab={activeTab} onTabChange={(tab) => navigateTo(tab as ViewType)} />
           
           <div className="lg:pl-70">
-            <Header />
+            <Header onOpenSettings={() => navigateTo('settings')} />
             <main className="min-h-[calc(100vh-72px)]">
               {renderContent()}
             </main>

@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { Moon, Palette, Bell, Target, Download, Trash2, HelpCircle, ExternalLink, LogOut } from 'lucide-react';
+import { Moon, Palette, Bell, Target, Download, Trash2, HelpCircle, ExternalLink, LogOut, Archive } from 'lucide-react';
 import { categoryDistribution } from '@/data/mockData';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
-import { ArchivedHabitsSection } from '@/components/settings/ArchivedHabitsSection';
-import { ActivityHistory } from '@/components/settings/ActivityHistory';
+import { useHabits } from '@/contexts/HabitContext';
 
 interface SettingsProps {
   onLogout?: () => void;
+  onOpenArchivedHabits?: () => void;
 }
 
-export function Settings({ onLogout }: SettingsProps) {
+export function Settings({ onLogout, onOpenArchivedHabits }: SettingsProps) {
+  const { archivedHabits } = useHabits();
   const [darkMode, setDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [weeklyGoal, setWeeklyGoal] = useState([80]);
@@ -38,11 +39,24 @@ export function Settings({ onLogout }: SettingsProps) {
       </div>
 
       <div className="space-y-6">
-        {/* Activity History */}
-        <ActivityHistory />
-
-        {/* Archived Habits */}
-        <ArchivedHabitsSection />
+        {/* Archived Habits Link */}
+        <section className="stat-card">
+          <button
+            onClick={onOpenArchivedHabits}
+            className="w-full flex items-center justify-between p-4 rounded-lg bg-background-tertiary hover:bg-background-tertiary/80 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <Archive className="w-5 h-5 text-primary" />
+              <div className="text-left">
+                <p className="text-body font-medium text-foreground">Archived Habits</p>
+                <p className="text-small text-muted-foreground">
+                  {archivedHabits.length} habit{archivedHabits.length !== 1 ? 's' : ''} archived
+                </p>
+              </div>
+            </div>
+            <span className="text-muted-foreground">→</span>
+          </button>
+        </section>
 
         {/* Appearance */}
         <section className="stat-card">
