@@ -25,7 +25,7 @@ export function CompletionSummary({ completed, total, isVisible = true }: Comple
   return (
     <div 
       className={`fixed bottom-20 lg:bottom-6 left-3 right-3 sm:left-4 sm:right-4 lg:left-auto lg:right-6 lg:w-[360px] z-40 transition-transform duration-300 ease-out ${
-        isVisible ? 'translate-y-0' : 'translate-y-24'
+        isVisible ? 'translate-y-0' : 'translate-y-20'
       }`}
     >
       <div className="glass-card p-2.5 sm:p-3 flex items-center gap-3 shadow-modal">
