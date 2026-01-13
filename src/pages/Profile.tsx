@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { 
   Settings, 
   LogOut, 
@@ -14,16 +14,14 @@ import {
   Shield,
   HelpCircle
 } from 'lucide-react';
-import { BottomNav } from '@/components/layout/BottomNav';
-import { useScrollHide } from '@/hooks/use-scroll-hide';
 
-interface ProfileProps {
+interface LayoutContext {
   onLogout: () => void;
 }
 
-export function Profile({ onLogout }: ProfileProps) {
+export function Profile() {
   const navigate = useNavigate();
-  const { isVisible } = useScrollHide({ threshold: 10 });
+  const { onLogout } = useOutletContext<LayoutContext>();
   
   const stats = [
     { icon: Target, label: 'Active Habits', value: '8', color: 'bg-primary/20' },
@@ -144,12 +142,6 @@ export function Profile({ onLogout }: ProfileProps) {
           </button>
         </div>
       </div>
-      
-      <BottomNav 
-        activeTab="profile" 
-        onTabChange={(tab) => navigate(`/${tab === 'dashboard' ? '' : tab}`)}
-        isVisible={isVisible}
-      />
     </div>
   );
 }

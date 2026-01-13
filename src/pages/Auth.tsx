@@ -1,15 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sparkles, Mail, ArrowRight, Loader2, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 type AuthStep = 'email' | 'sending' | 'sent' | 'verifying' | 'success';
 
-interface AuthProps {
-  onLoginSuccess: () => void;
-}
-
-export function Auth({ onLoginSuccess }: AuthProps) {
+export function Auth() {
+  const navigate = useNavigate();
+  
+  const onLoginSuccess = () => {
+    localStorage.setItem('focusflow_authenticated', 'true');
+    navigate('/');
+  };
   const [email, setEmail] = useState('');
   const [step, setStep] = useState<AuthStep>('email');
   const [error, setError] = useState('');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Moon, Palette, Bell, Target, Download, Trash2, HelpCircle, ExternalLink, LogOut, Archive } from 'lucide-react';
 import { categoryDistribution } from '@/data/mockData';
 import { Switch } from '@/components/ui/switch';
@@ -7,11 +7,12 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import { useHabits } from '@/contexts/HabitContext';
 
-interface SettingsProps {
-  onLogout?: () => void;
+interface LayoutContext {
+  onLogout: () => void;
 }
 
-export function Settings({ onLogout }: SettingsProps) {
+export function Settings() {
+  const { onLogout } = useOutletContext<LayoutContext>();
   const navigate = useNavigate();
   const { archivedHabits } = useHabits();
   const [darkMode, setDarkMode] = useState(true);
