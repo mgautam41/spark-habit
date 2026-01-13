@@ -1,8 +1,13 @@
-import { Bell, Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { getRandomQuote } from '@/data/mockData';
 import { format } from 'date-fns';
+import { NotificationDropdown } from './NotificationDropdown';
 
-export function Header() {
+interface HeaderProps {
+  onOpenSettings?: () => void;
+}
+
+export function Header({ onOpenSettings }: HeaderProps) {
   const today = new Date();
   const quote = getRandomQuote();
 
@@ -28,10 +33,7 @@ export function Header() {
           </div>
 
           {/* Notification Bell */}
-          <button className="relative p-2 rounded-lg hover:bg-background-tertiary transition-colors touch-manipulation">
-            <Bell className="w-5 h-5 text-muted-foreground" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary animate-pulse" />
-          </button>
+          <NotificationDropdown onOpenSettings={onOpenSettings} />
 
           {/* Avatar - Desktop */}
           <div className="hidden lg:flex w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent items-center justify-center flex-shrink-0">
