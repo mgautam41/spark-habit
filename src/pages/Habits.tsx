@@ -1,19 +1,18 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { DraggableHabitCard } from '@/components/habits/DraggableHabitCard';
 import { CompletionSummary } from '@/components/habits/CompletionSummary';
 import { AddHabitButton } from '@/components/habits/AddHabitButton';
 import { useHabits } from '@/contexts/HabitContext';
 import { useActivity } from '@/contexts/ActivityContext';
+import { useScrollHide } from '@/hooks/use-scroll-hide';
 
-interface HabitsProps {
-  onCreateHabit: () => void;
-  onEditHabit: (habitId: number) => void;
-}
-
-export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
+export function Habits() {
+  const navigate = useNavigate();
   const { habits, toggleHabit, reorderHabits } = useHabits();
   const { addActivity } = useActivity();
+  const { isVisible } = useScrollHide({ threshold: 10 });
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
 
   const completedCount = habits.filter(h => h.completed).length;
@@ -55,7 +54,7 @@ export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
   ] as const;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-[1200px] mx-auto pb-36 lg:pb-24">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1200px] mx-auto pb-28 lg:pb-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-h1 text-foreground">Today's Habits</h1>
@@ -65,7 +64,7 @@ export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex gap-2 mb-4 sm:mb-6 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {filterOptions.map(option => (
           <button
             key={option.value}
@@ -90,7 +89,7 @@ export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
             index={index}
             totalCount={filteredHabits.length}
             onToggle={handleToggle}
-            onEdit={() => onEditHabit(habit.id)}
+            onEdit={() => navigate(`/habits/edit/${habit.id}`)}
             onMoveUp={handleMoveUp}
             onMoveDown={handleMoveDown}
             delay={index * 60}
@@ -109,8 +108,8 @@ export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
       {/* Completion Summary */}
       <CompletionSummary completed={completedCount} total={totalCount} />
 
-      {/* FAB */}
-      <AddHabitButton onClick={onCreateHabit} />
+      {/* FAB with scroll behavior */}
+      <AddHabitButton onClick={() => navigate('/habits/create')} isVisible={isVisible} />
     </div>
   );
 }
