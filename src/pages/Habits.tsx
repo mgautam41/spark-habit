@@ -3,47 +3,21 @@ import { format } from 'date-fns';
 import { HabitCard } from '@/components/habits/HabitCard';
 import { CompletionSummary } from '@/components/habits/CompletionSummary';
 import { AddHabitButton } from '@/components/habits/AddHabitButton';
-import { habits as initialHabits, Habit } from '@/data/mockData';
-import { toast } from 'sonner';
+import { useHabits } from '@/contexts/HabitContext';
 
-export function Habits() {
-  const [habits, setHabits] = useState<Habit[]>(initialHabits);
+interface HabitsProps {
+  onCreateHabit: () => void;
+}
+
+export function Habits({ onCreateHabit }: HabitsProps) {
+  const { habits, toggleHabit } = useHabits();
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
 
   const completedCount = habits.filter(h => h.completed).length;
   const totalCount = habits.length;
 
   const handleToggle = (id: number) => {
-    setHabits(prev => prev.map(habit => {
-      if (habit.id === id) {
-        const newCompleted = !habit.completed;
-        const newStreak = newCompleted ? habit.streak + 1 : Math.max(0, habit.streak - 1);
-        
-        // Show toast on completion
-        if (newCompleted) {
-          if (newStreak % 7 === 0 && newStreak > 0) {
-            toast.success(`🎉 ${newStreak} day streak!`, {
-              description: `Amazing! You've completed "${habit.name}" for ${newStreak} days!`
-            });
-          } else {
-            toast.success(`✓ ${habit.name} completed`);
-          }
-        }
-        
-        return { 
-          ...habit, 
-          completed: newCompleted,
-          streak: newStreak
-        };
-      }
-      return habit;
-    }));
-  };
-
-  const handleAddHabit = () => {
-    toast.info('Add habit feature coming soon!', {
-      description: 'This will open a modal to create a new habit.'
-    });
+    toggleHabit(id);
   };
 
   const filteredHabits = habits.filter(habit => {
@@ -109,7 +83,7 @@ export function Habits() {
       <CompletionSummary completed={completedCount} total={totalCount} />
 
       {/* FAB */}
-      <AddHabitButton onClick={handleAddHabit} />
+      <AddHabitButton onClick={onCreateHabit} />
     </div>
   );
 }
