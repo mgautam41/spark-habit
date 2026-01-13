@@ -11,10 +11,11 @@ import { Auth } from '@/pages/Auth';
 import { CreateHabit } from '@/pages/CreateHabit';
 import { EditHabit } from '@/pages/EditHabit';
 import { ArchivedHabits } from '@/pages/ArchivedHabits';
+import { Profile } from '@/pages/Profile';
 import { HabitProvider } from '@/contexts/HabitContext';
 import { ActivityProvider } from '@/contexts/ActivityContext';
 
-type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit' | 'archived-habits';
+type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit' | 'archived-habits' | 'profile';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<ViewType>('dashboard');
@@ -79,13 +80,22 @@ const Index = () => {
         ) : null;
       case 'archived-habits':
         return <ArchivedHabits onBack={() => navigateTo('settings')} />;
+      case 'profile':
+        return (
+          <Profile 
+            onOpenSettings={() => navigateTo('settings')}
+            onOpenArchivedHabits={() => navigateTo('archived-habits')}
+            onLogout={handleLogout}
+            onBack={() => navigateTo('dashboard')}
+          />
+        );
       default:
         return <Dashboard />;
     }
   };
 
   // Full-screen pages without layout
-  if (activeTab === 'create-habit' || activeTab === 'edit-habit' || activeTab === 'archived-habits') {
+  if (activeTab === 'create-habit' || activeTab === 'edit-habit' || activeTab === 'archived-habits' || activeTab === 'profile') {
     return (
       <ActivityProvider>
         <HabitProvider>
@@ -117,9 +127,6 @@ const Index = () => {
           <BottomNav 
             activeTab={activeTab} 
             onTabChange={(tab) => navigateTo(tab as ViewType)}
-            onOpenSettings={() => navigateTo('settings')}
-            onOpenArchivedHabits={() => navigateTo('archived-habits')}
-            onLogout={handleLogout}
           />
         </div>
       </HabitProvider>
