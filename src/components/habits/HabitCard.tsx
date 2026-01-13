@@ -22,20 +22,28 @@ const iconMap: Record<string, LucideIcon> = {
 interface HabitCardProps {
   habit: Habit;
   onToggle: (id: number) => void;
+  onEdit?: () => void;
   delay?: number;
 }
 
-export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
+export function HabitCard({ habit, onToggle, onEdit, delay = 0 }: HabitCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const categoryColor = categoryColorsHex[habit.category];
   
   // Dynamic icon lookup
   const IconComponent = iconMap[habit.icon] || Circle;
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 300);
     onToggle(habit.id);
+  };
+
+  const handleCardClick = () => {
+    if (onEdit) {
+      onEdit();
+    }
   };
 
   // Calculate progress (mock: based on streak vs longest streak)
@@ -43,11 +51,15 @@ export function HabitCard({ habit, onToggle, delay = 0 }: HabitCardProps) {
 
   return (
     <div 
-      className="habit-card animate-fade-in-up"
+      className={cn(
+        "habit-card animate-fade-in-up",
+        onEdit && "cursor-pointer hover:bg-card-hover"
+      )}
       style={{ 
         borderLeftColor: categoryColor,
         animationDelay: `${delay}ms`
       }}
+      onClick={handleCardClick}
     >
       <div className="flex items-start sm:items-center gap-3 sm:gap-4">
         {/* Checkbox */}

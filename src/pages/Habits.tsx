@@ -7,9 +7,10 @@ import { useHabits } from '@/contexts/HabitContext';
 
 interface HabitsProps {
   onCreateHabit: () => void;
+  onEditHabit: (habitId: number) => void;
 }
 
-export function Habits({ onCreateHabit }: HabitsProps) {
+export function Habits({ onCreateHabit, onEditHabit }: HabitsProps) {
   const { habits, toggleHabit } = useHabits();
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
 
@@ -66,6 +67,7 @@ export function Habits({ onCreateHabit }: HabitsProps) {
             key={habit.id}
             habit={habit}
             onToggle={handleToggle}
+            onEdit={() => onEditHabit(habit.id)}
             delay={index * 60}
           />
         ))}
