@@ -9,12 +9,14 @@ import { CalendarView } from '@/pages/CalendarView';
 import { Settings } from '@/pages/Settings';
 import { Auth } from '@/pages/Auth';
 import { CreateHabit } from '@/pages/CreateHabit';
+import { EditHabit } from '@/pages/EditHabit';
 import { HabitProvider } from '@/contexts/HabitContext';
 
-type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit';
+type ViewType = 'dashboard' | 'habits' | 'analytics' | 'calendar' | 'settings' | 'create-habit' | 'edit-habit';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<ViewType>('dashboard');
+  const [editingHabitId, setEditingHabitId] = useState<number | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('focusflow_authenticated') === 'true';
   });
@@ -35,6 +37,14 @@ const Index = () => {
 
   const navigateTo = (view: ViewType) => {
     setActiveTab(view);
+    if (view !== 'edit-habit') {
+      setEditingHabitId(null);
+    }
+  };
+
+  const navigateToEditHabit = (habitId: number) => {
+    setEditingHabitId(habitId);
+    setActiveTab('edit-habit');
   };
 
   const renderContent = () => {
@@ -42,7 +52,12 @@ const Index = () => {
       case 'dashboard':
         return <Dashboard />;
       case 'habits':
-        return <Habits onCreateHabit={() => navigateTo('create-habit')} />;
+        return (
+          <Habits 
+            onCreateHabit={() => navigateTo('create-habit')} 
+            onEditHabit={navigateToEditHabit}
+          />
+        );
       case 'analytics':
         return <Analytics />;
       case 'calendar':
@@ -51,13 +66,17 @@ const Index = () => {
         return <Settings onLogout={handleLogout} />;
       case 'create-habit':
         return <CreateHabit onBack={() => navigateTo('habits')} />;
+      case 'edit-habit':
+        return editingHabitId ? (
+          <EditHabit habitId={editingHabitId} onBack={() => navigateTo('habits')} />
+        ) : null;
       default:
         return <Dashboard />;
     }
   };
 
   // Full-screen pages without layout
-  if (activeTab === 'create-habit') {
+  if (activeTab === 'create-habit' || activeTab === 'edit-habit') {
     return (
       <HabitProvider>
         <div className="min-h-screen bg-background">
