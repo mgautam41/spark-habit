@@ -1,18 +1,19 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { HabitForm, HabitFormData } from '@/components/habits/HabitForm';
 import { DeleteHabitDialog } from '@/components/habits/DeleteHabitDialog';
 import { useHabits } from '@/contexts/HabitContext';
+import { BottomNav } from '@/components/layout/BottomNav';
+import { useScrollHide } from '@/hooks/use-scroll-hide';
 
-interface EditHabitProps {
-  habitId: number;
-  onBack: () => void;
-}
-
-export function EditHabit({ habitId, onBack }: EditHabitProps) {
+export function EditHabit() {
+  const navigate = useNavigate();
+  const { habitId } = useParams();
   const { getHabitById, updateHabit, deleteHabit, archiveHabit, resetStreak } = useHabits();
+  const { isVisible } = useScrollHide({ threshold: 10 });
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
-  const habit = getHabitById(habitId);
+  const habit = getHabitById(Number(habitId));
 
   if (!habit) {
     return (
@@ -20,7 +21,7 @@ export function EditHabit({ habitId, onBack }: EditHabitProps) {
         <div className="text-center">
           <p className="text-lg text-muted-foreground">Habit not found</p>
           <button
-            onClick={onBack}
+            onClick={() => navigate('/habits')}
             className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg"
           >
             Go Back
@@ -31,22 +32,22 @@ export function EditHabit({ habitId, onBack }: EditHabitProps) {
   }
 
   const handleSubmit = (data: HabitFormData) => {
-    updateHabit(habitId, data);
-    onBack();
+    updateHabit(habit.id, data);
+    navigate('/habits');
   };
 
   const handleDelete = () => {
-    deleteHabit(habitId);
-    onBack();
+    deleteHabit(habit.id);
+    navigate('/habits');
   };
 
   const handleArchive = () => {
-    archiveHabit(habitId);
-    onBack();
+    archiveHabit(habit.id);
+    navigate('/habits');
   };
 
   const handleResetStreak = () => {
-    resetStreak(habitId);
+    resetStreak(habit.id);
   };
 
   return (
@@ -55,7 +56,7 @@ export function EditHabit({ habitId, onBack }: EditHabitProps) {
         mode="edit"
         habit={habit}
         onSubmit={handleSubmit}
-        onCancel={onBack}
+        onCancel={() => navigate('/habits')}
         onDelete={() => setShowDeleteDialog(true)}
         onArchive={handleArchive}
         onResetStreak={handleResetStreak}
@@ -67,6 +68,12 @@ export function EditHabit({ habitId, onBack }: EditHabitProps) {
         habitName={habit.name}
         onArchive={handleArchive}
         onDelete={handleDelete}
+      />
+      
+      <BottomNav 
+        activeTab="habits" 
+        onTabChange={(tab) => navigate(`/${tab === 'dashboard' ? '' : tab}`)}
+        isVisible={isVisible}
       />
     </>
   );
